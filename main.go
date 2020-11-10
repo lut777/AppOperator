@@ -26,6 +26,8 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
+	batchv1 "k8s.io/api/batch/v1"
+
 	webappv1 "webhooktest/api/v1"
 	"webhooktest/controllers"
 	// +kubebuilder:scaffold:imports
@@ -40,6 +42,7 @@ func init() {
 	_ = clientgoscheme.AddToScheme(scheme)
 
 	_ = webappv1.AddToScheme(scheme)
+	_ = batchv1.AddToScheme(scheme)
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -72,6 +75,10 @@ func main() {
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "AppOperator")
+		os.Exit(1)
+	}
+	if err = (&batchv1.AppOperator{}).SetupWebhookWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create webhook", "webhook", "AppOperator")
 		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder
