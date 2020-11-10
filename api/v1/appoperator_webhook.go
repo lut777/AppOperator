@@ -34,7 +34,7 @@ func (r *AppOperator) SetupWebhookWithManager(mgr ctrl.Manager) error {
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 
-// +kubebuilder:webhook:path=/mutate-webapp-my-domain-v1-appoperator,mutating=true,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,verbs=create;update,versions=v1,name=mappoperator.kb.io
+// +kubebuilder:webhook:path=/mutate-webapp-my-domain-v1-appoperator,mutating=true,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,verbs=create;update;delete,versions=v1,name=mappoperator.kb.io
 
 var _ webhook.Defaulter = &AppOperator{}
 
@@ -43,6 +43,17 @@ func (r *AppOperator) Default() {
 	appoperatorlog.Info("default", "name", r.Name)
 
 	// TODO(user): fill in your defaulting logic.
+	appoperatorlog.Info("Default", "address", r.Spec.Address)
+
+	appoperatorlog.Info("Default", "maxbackups", r.Spec.MaxBackups)
+
+	appoperatorlog.Info("Default", "StorageSize", r.Spec.StorageSize)
+
+	appoperatorlog.Info("Default", "Type", r.Spec.Type)
+
+	appoperatorlog.Info("Default", "User", r.Spec.User)
+
+	appoperatorlog.Info("Default", "Limits", r.Spec.Limits)
 }
 
 // TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
@@ -55,6 +66,19 @@ func (r *AppOperator) ValidateCreate() error {
 	appoperatorlog.Info("validate create", "name", r.Name)
 
 	// TODO(user): fill in your validation logic upon object creation.
+
+	appoperatorlog.Info("Create", "address", r.Spec.Address)
+
+	appoperatorlog.Info("Create", "maxbackups", r.Spec.MaxBackups)
+
+	appoperatorlog.Info("Create", "StorageSize", r.Spec.StorageSize)
+
+	appoperatorlog.Info("Create", "Type", r.Spec.Type)
+
+	appoperatorlog.Info("Create", "User", r.Spec.User)
+
+	appoperatorlog.Info("Create", "Limits", r.Spec.Limits)
+
 	return nil
 }
 
