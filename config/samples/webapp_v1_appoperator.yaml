@@ -4,7 +4,8 @@ metadata:
   name: appoperator-sample
 spec:
   # Add fields here
-  resources: 1
+  resources:
+    cpu: 0.5
   address: aaa
   user: a-b
   type: full
