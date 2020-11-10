@@ -24,8 +24,8 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o manager 
 FROM gcr.io/distroless/static:nonroot
 WORKDIR /
 COPY --from=builder /workspace/manager .
-COPY --from-builder /workspace/cert/server.crt  /tmp/k8s-webhook-server/serving-certs/tls.crt
-COPY --from-builder /workspace/cert/tls.key     /tmp/k8s-webhook-server/serving-certs/tls.key
+COPY --from=builder /workspace/cert/server.crt  /tmp/k8s-webhook-server/serving-certs/tls.crt
+COPY --from=builder /workspace/cert/tls.key     /tmp/k8s-webhook-server/serving-certs/tls.key
 
 USER nonroot:nonroot
 
