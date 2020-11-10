@@ -4,10 +4,10 @@ metadata:
   name: appoperator-sample
 spec:
   # Add fields here
-  Address: aaa
-  User: a-b
-  Type: full
-  StorageSize: 32
-  MaxBackups: 4
-Status:
-  Path: /a/
+  address: aaa
+  user: a-b
+  type: full
+  storageSize: 32
+  maxBackups: 4
+status:
+  path: /a/
