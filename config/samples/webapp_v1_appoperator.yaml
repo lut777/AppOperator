@@ -5,7 +5,8 @@ metadata:
 spec:
   # Add fields here
   resources:
-    cpu: 0.5
+    requests:
+      cpu: 500m
   address: aaa
   user: a-b
   type: full
