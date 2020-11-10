@@ -34,7 +34,7 @@ func (r *AppOperator) SetupWebhookWithManager(mgr ctrl.Manager) error {
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 
-// +kubebuilder:webhook:path=/mutate-batch-v1-appoperator,mutating=true,failurePolicy=fail,groups=batch,resources=appoperators,verbs=create;update,versions=v1,name=mappoperator.kb.io
+// +kubebuilder:webhook:path=/mutate-webapp-my-domain-v1-appoperator,mutating=true,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,verbs=create;update,versions=v1,name=mappoperator.kb.io
 
 var _ webhook.Defaulter = &AppOperator{}
 
@@ -46,7 +46,7 @@ func (r *AppOperator) Default() {
 }
 
 // TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
-// +kubebuilder:webhook:verbs=create;update,path=/validate-batch-v1-appoperator,mutating=false,failurePolicy=fail,groups=batch,resources=appoperators,versions=v1,name=vappoperator.kb.io
+// +kubebuilder:webhook:verbs=create;update,path=/validate-webapp-my-domain-v1-appoperator,mutating=false,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,versions=v1,name=vappoperator.kb.io
 
 var _ webhook.Validator = &AppOperator{}
 
