@@ -1,0 +1,7 @@
+domain: my.domain
+repo: webhooktest
+resources:
+- group: webapp
+  kind: AppOperator
+  version: v1
+version: "2"
