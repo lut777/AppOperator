@@ -1,17 +1,16 @@
-package webhook
+package v1
 
 import (
 	"errors"
 	"github.com/go-logr/logr"
-	"regexp"
-	"webhooktest/api/v1"
-	"k8s.io/apimachinery/pkg/api/resource"
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
+	"regexp"
 )
 
 var maxreplica int32 = 10
 
-func Validation(r *v1.AppOperator, log logr.Logger)error{
+func Validation(r *AppOperator, log logr.Logger)error{
 
 	if !checkUsrname(r.Spec.User){
 		log.Info("misformatted user name", r.Spec.User, r.Name)

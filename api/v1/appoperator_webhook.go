@@ -21,7 +21,6 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
-	lwebhk "webhooktest/webhook"
 )
 
 // log is for logging in this package.
@@ -70,7 +69,7 @@ func (r *AppOperator) ValidateCreate() error {
 
 	appoperatorlog.Info("Create", "Limits", r.Spec.Limits)
 
-	err := lwebhk.Validation(r, appoperatorlog)
+	err := Validation(r, appoperatorlog)
 	if err != nil {
 		appoperatorlog.Info("validate failed")
 		return err
@@ -84,7 +83,7 @@ func (r *AppOperator) ValidateUpdate(old runtime.Object) error {
 
 	// TODO(user): fill in your validation logic upon object update.
 
-	err := lwebhk.Validation(r, appoperatorlog)
+	err := Validation(r, appoperatorlog)
 	if err != nil {
 		appoperatorlog.Info("validate failed")
 		return err
