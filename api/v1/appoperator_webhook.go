@@ -21,6 +21,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
+	lwebhk "webhooktest/webhook"
 )
 
 // log is for logging in this package.
@@ -43,17 +44,7 @@ func (r *AppOperator) Default() {
 	appoperatorlog.Info("default", "name", r.Name)
 
 	// TODO(user): fill in your defaulting logic.
-	appoperatorlog.Info("Default", "address", r.Spec.Address)
 
-	appoperatorlog.Info("Default", "maxbackups", r.Spec.MaxBackups)
-
-	appoperatorlog.Info("Default", "StorageSize", r.Spec.StorageSize)
-
-	appoperatorlog.Info("Default", "Type", r.Spec.Type)
-
-	appoperatorlog.Info("Default", "User", r.Spec.User)
-
-	appoperatorlog.Info("Default", "Limits", r.Spec.Limits)
 }
 
 // TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
@@ -79,6 +70,11 @@ func (r *AppOperator) ValidateCreate() error {
 
 	appoperatorlog.Info("Create", "Limits", r.Spec.Limits)
 
+	err := lwebhk.Validation(r, appoperatorlog)
+	if err != nil {
+		appoperatorlog.Info("validate failed")
+		return err
+	}
 	return nil
 }
 
@@ -87,6 +83,13 @@ func (r *AppOperator) ValidateUpdate(old runtime.Object) error {
 	appoperatorlog.Info("validate update", "name", r.Name)
 
 	// TODO(user): fill in your validation logic upon object update.
+
+	err := lwebhk.Validation(r, appoperatorlog)
+	if err != nil {
+		appoperatorlog.Info("validate failed")
+		return err
+	}
+
 	return nil
 }
 
