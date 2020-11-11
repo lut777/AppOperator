@@ -78,7 +78,7 @@ func checkResourceRequirements(req corev1.ResourceRequirements)(bool, error) {
 	if !ok {
 		return false, errors.New("request memory not requested")
 	}
-	if req.Limits.Memory().Cmp(reqstore) <= 0 {
+	if _, ok := req.Limits[corev1.ResourceMemory]; ok && req.Limits.Memory().Cmp(reqstore) < 0 {
 		return false, errors.New("limit memory smaller than request")
 	}
 
