@@ -5,6 +5,7 @@ kind: CustomResourceDefinition
 metadata:
   name: appoperators.webapp.my.domain
 spec:
+  preserveUnknownFields: false
   conversion:
     strategy: Webhook
     webhookClientConfig:

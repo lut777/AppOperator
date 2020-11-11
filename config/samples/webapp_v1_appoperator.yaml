@@ -10,7 +10,7 @@ spec:
   address: aaa
   user: a-b
   type: full
-  storageSize: 32
+  storageSize: "32"
   maxBackups: 4
 status:
   path: /a/
