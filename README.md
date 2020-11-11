@@ -1,13 +1,13 @@
 # AppOperator
 A demo for validation of specific crd
 
-##Requirement
+## Requirement
 k8s: 1.16+
 certmanager: 1.0.4+
 kustomize: v3.8.6
 
 
-##Deploy
+## Deploy
 
 ```shell
 make install 
