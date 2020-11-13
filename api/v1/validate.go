@@ -8,11 +8,11 @@ import (
 	"regexp"
 )
 
-var maxreplica int32 = 10
+var _maxreplica int32 = 10
 
-func Validation(r *AppOperator, log logr.Logger)error{
+func Validation(r *AppOperator, log logr.Logger) error {
 
-	if !checkUsrname(r.Spec.User){
+	if !checkUsrname(r.Spec.User) {
 		log.Info("misformatted user name", r.Spec.User, r.Name)
 		return errors.New("misformatted user name")
 	}
@@ -27,7 +27,7 @@ func Validation(r *AppOperator, log logr.Logger)error{
 		return errors.New("misformatted maxBackups")
 	}
 
-	if !checkAddress(r.Spec.Address){
+	if !checkAddress(r.Spec.Address) {
 		log.Info("misformatted address", r.Spec.Address, r.Name)
 		return errors.New("misformatted address")
 	}
@@ -44,7 +44,7 @@ func Validation(r *AppOperator, log logr.Logger)error{
 }
 
 func checkUsrname(usr string) bool {
-	if len(usr) == 0{
+	if len(usr) == 0 {
 		return true
 	}
 	match, _ := regexp.MatchString("^([0-9a-zA-Z]+?)_([0-9a-zA-Z]+?)$", usr)
@@ -65,7 +65,7 @@ func checkType(typ string) bool {
 }
 
 func checkMaxBackups(maxb int32) bool {
-	return 1 <= maxb && maxb <= maxreplica
+	return 1 <= maxb && maxb <= _maxreplica
 }
 
 func checkAddress(address string) bool {
@@ -73,7 +73,7 @@ func checkAddress(address string) bool {
 	return match
 }
 
-func checkResourceRequirements(req corev1.ResourceRequirements)(bool, error) {
+func checkResourceRequirements(req corev1.ResourceRequirements) (bool, error) {
 	reqstore, ok := req.Requests[corev1.ResourceMemory]
 	if !ok {
 		return false, errors.New("request memory not requested")
@@ -95,7 +95,7 @@ func checkStorageSize(size string, cmp resource.Quantity) (bool, error) {
 		return false, errors.New("misformatted storage")
 	}
 
-	if base.Cmp(cmp) < 1 {
+	if base.Cmp(cmp) < 0 {
 		return false, errors.New("storageSize smaller than request memory")
 	}
 
