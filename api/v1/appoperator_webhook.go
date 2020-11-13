@@ -34,7 +34,7 @@ func (r *AppOperator) SetupWebhookWithManager(mgr ctrl.Manager) error {
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 
-// +kubebuilder:webhook:path=/mutate-webapp-my-domain-v1-appoperator,mutating=true,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,verbs=create;update;delete,versions=v1,name=webhook.pingcap.io
+// +kubebuilder:webhook:path=/mutate-webapp-my-domain-v1-appoperator,mutating=true,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,verbs=create;update,versions=v1,name=webhook.pingcap.io
 
 var _ webhook.Defaulter = &AppOperator{}
 
