@@ -1,0 +1,505 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">webhooktest/api/v1/appoperator_types.go (100.0%)</option>
+				
+				<option value="file1">webhooktest/api/v1/appoperator_webhook.go (0.0%)</option>
+				
+				<option value="file2">webhooktest/api/v1/validate.go (59.1%)</option>
+				
+				<option value="file3">webhooktest/api/v1/zz_generated.deepcopy.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">/*
+
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+package v1
+
+import (
+        corev1 "k8s.io/api/core/v1"
+        metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
+// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+
+// AppOperatorSpec defines the desired state of AppOperator
+type AppOperatorSpec struct {
+        // INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
+        // Important: Run "make" to regenerate code after modifying this file
+
+        // corev1 "k8s.io/api/core/v1"
+        // Check that resources.requests.storage must be configured
+        corev1.ResourceRequirements `json:"resources"`
+        // Address must be a valid URL
+        Address string `json:"address"`
+        // User must be with format of `a_b` (alphanumeric characters, separated by only one `_`)
+        User string `json:"user,omitempty"`
+        // Type can only be `full` or `partial`.
+        Type string `json:"type,omitempty"`
+        // StorageSize must be a valid Quantity (https://godoc.org/k8s.io/apimachinery/pkg/api/resource#Quantity)
+        // and must be greater than resources.requests.storage
+        StorageSize string `json:"storageSize,omitempty"`
+        // MaxBackups must be &gt;=1 &amp;&amp; &lt;= 10.
+        MaxBackups int32 `json:"maxBackups"`
+}
+
+// AppOperatorStatus defines the observed state of AppOperator
+type AppOperatorStatus struct {
+        // INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
+        // Important: Run "make" to regenerate code after modifying this file
+        Path string `json:"path"`
+}
+
+// +kubebuilder:object:root=true
+
+// AppOperator is the Schema for the appoperators API
+type AppOperator struct {
+        metav1.TypeMeta   `json:",inline"`
+        metav1.ObjectMeta `json:"metadata"`
+
+        Spec   AppOperatorSpec   `json:"spec"`
+        Status AppOperatorStatus `json:"status"`
+}
+
+// +kubebuilder:object:root=true
+
+// AppOperatorList contains a list of AppOperator
+type AppOperatorList struct {
+        metav1.TypeMeta `json:",inline"`
+        metav1.ListMeta `json:"metadata,omitempty"`
+        Items           []AppOperator `json:"items"`
+}
+
+func init() <span class="cov8" title="1">{
+        SchemeBuilder.Register(&amp;AppOperator{}, &amp;AppOperatorList{})
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">/*
+
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+package v1
+
+import (
+        "k8s.io/apimachinery/pkg/runtime"
+        ctrl "sigs.k8s.io/controller-runtime"
+        logf "sigs.k8s.io/controller-runtime/pkg/log"
+        "sigs.k8s.io/controller-runtime/pkg/webhook"
+)
+
+// log is for logging in this package.
+var appoperatorlog = logf.Log.WithName("appoperator-resource")
+
+func (r *AppOperator) SetupWebhookWithManager(mgr ctrl.Manager) error <span class="cov0" title="0">{
+        return ctrl.NewWebhookManagedBy(mgr).
+                For(r).
+                Complete()
+}</span>
+
+// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
+
+// +kubebuilder:webhook:path=/mutate-webapp-my-domain-v1-appoperator,mutating=true,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,verbs=create;update;delete,versions=v1,name=mappoperator.kb.io
+
+var _ webhook.Defaulter = &amp;AppOperator{}
+
+// Default implements webhook.Defaulter so a webhook will be registered for the type
+func (r *AppOperator) Default() <span class="cov0" title="0">{
+        appoperatorlog.Info("default", "name", r.Name)
+
+        // TODO(user): fill in your defaulting logic.
+
+}</span>
+
+// TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
+// +kubebuilder:webhook:verbs=create;update,path=/validate-webapp-my-domain-v1-appoperator,mutating=false,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,versions=v1,name=vappoperator.kb.io
+
+var _ webhook.Validator = &amp;AppOperator{}
+
+// ValidateCreate implements webhook.Validator so a webhook will be registered for the type
+func (r *AppOperator) ValidateCreate() error <span class="cov0" title="0">{
+        appoperatorlog.Info("validate create", "name", r.Name)
+
+        // TODO(user): fill in your validation logic upon object creation.
+
+        appoperatorlog.Info("Create", "address", r.Spec.Address)
+        appoperatorlog.Info("Create", "maxbackups", r.Spec.MaxBackups)
+        appoperatorlog.Info("Create", "StorageSize", r.Spec.StorageSize)
+        appoperatorlog.Info("Create", "Type", r.Spec.Type)
+        appoperatorlog.Info("Create", "User", r.Spec.User)
+        appoperatorlog.Info("Create", "Limits", r.Spec.Limits)
+
+        err := Validation(r, appoperatorlog)
+        if err != nil </span><span class="cov0" title="0">{
+                appoperatorlog.Info("validate failed")
+                return err
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// ValidateUpdate implements webhook.Validator so a webhook will be registered for the type
+func (r *AppOperator) ValidateUpdate(old runtime.Object) error <span class="cov0" title="0">{
+        appoperatorlog.Info("validate update", "name", r.Name)
+
+        // TODO(user): fill in your validation logic upon object update.
+
+        err := Validation(r, appoperatorlog)
+        if err != nil </span><span class="cov0" title="0">{
+                appoperatorlog.Info("validate failed")
+                return err
+        }</span>
+
+        <span class="cov0" title="0">return nil</span>
+}
+
+// ValidateDelete implements webhook.Validator so a webhook will be registered for the type
+func (r *AppOperator) ValidateDelete() error <span class="cov0" title="0">{
+        appoperatorlog.Info("validate delete", "name", r.Name)
+
+        // TODO(user): fill in your validation logic upon object deletion.
+        return nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package v1
+
+import (
+        "errors"
+        "github.com/go-logr/logr"
+        corev1 "k8s.io/api/core/v1"
+        "k8s.io/apimachinery/pkg/api/resource"
+        "regexp"
+)
+
+var _maxreplica int32 = 10
+
+func Validation(r *AppOperator, log logr.Logger) error <span class="cov0" title="0">{
+
+        if !checkUsrname(r.Spec.User) </span><span class="cov0" title="0">{
+                log.Info("misformatted user name", r.Spec.User, r.Name)
+                return errors.New("misformatted user name")
+        }</span>
+
+        <span class="cov0" title="0">if !checkType(r.Spec.Type) </span><span class="cov0" title="0">{
+                log.Info("misformatted type", r.Spec.Type, r.Name)
+                return errors.New("misformatted type")
+        }</span>
+
+        <span class="cov0" title="0">if !checkMaxBackups(r.Spec.MaxBackups) </span><span class="cov0" title="0">{
+                log.Info("misformatted maxBackups", r.Spec.MaxBackups, r.Name)
+                return errors.New("misformatted maxBackups")
+        }</span>
+
+        <span class="cov0" title="0">if !checkAddress(r.Spec.Address) </span><span class="cov0" title="0">{
+                log.Info("misformatted address", r.Spec.Address, r.Name)
+                return errors.New("misformatted address")
+        }</span>
+
+        <span class="cov0" title="0">ok, err := checkResourceRequirements(r.Spec.ResourceRequirements)
+        if !ok </span><span class="cov0" title="0">{
+                return err
+        }</span>
+
+        <span class="cov0" title="0">if ok, err := checkStorageSize(r.Spec.StorageSize, r.Spec.ResourceRequirements.Requests[corev1.ResourceMemory]); !ok </span><span class="cov0" title="0">{
+                return err
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+func checkUsrname(usr string) bool <span class="cov8" title="1">{
+        if len(usr) == 0 </span><span class="cov8" title="1">{
+                return true
+        }</span>
+        <span class="cov8" title="1">match, _ := regexp.MatchString("^([0-9a-zA-Z]+?)_([0-9a-zA-Z]+?)$", usr)
+        return match</span>
+}
+
+func checkType(typ string) bool <span class="cov8" title="1">{
+        switch typ </span>{
+        case "full":<span class="cov8" title="1">
+                return true</span>
+        case "partial":<span class="cov8" title="1">
+                return true</span>
+        case "":<span class="cov8" title="1">
+                return true</span>
+        default:<span class="cov8" title="1">
+                return false</span>
+        }
+}
+
+func checkMaxBackups(maxb int32) bool <span class="cov8" title="1">{
+        return 1 &lt;= maxb &amp;&amp; maxb &lt;= _maxreplica
+}</span>
+
+func checkAddress(address string) bool <span class="cov8" title="1">{
+        match, _ := regexp.MatchString("^(http|https?:\\/\\/)?([\\da-z\\.-]+)\\.([a-z\\.]{2,6})([\\/\\w \\.-]*)*\\/?$", address)
+        return match
+}</span>
+
+func checkResourceRequirements(req corev1.ResourceRequirements) (bool, error) <span class="cov8" title="1">{
+        reqstore, ok := req.Requests[corev1.ResourceMemory]
+        if !ok </span><span class="cov8" title="1">{
+                return false, errors.New("request memory not requested")
+        }</span>
+        <span class="cov8" title="1">if _, ok := req.Limits[corev1.ResourceMemory]; ok &amp;&amp; req.Limits.Memory().Cmp(reqstore) &lt; 0 </span><span class="cov8" title="1">{
+                return false, errors.New("limit memory smaller than request")
+        }</span>
+
+        <span class="cov8" title="1">return true, nil</span>
+}
+
+func checkStorageSize(size string, cmp resource.Quantity) (bool, error) <span class="cov8" title="1">{
+        if len(size) == 0 </span><span class="cov8" title="1">{
+                return true, nil
+        }</span>
+
+        <span class="cov8" title="1">base, err := resource.ParseQuantity(size)
+        if err != nil </span><span class="cov8" title="1">{
+                return false, errors.New("misformatted storage")
+        }</span>
+
+        <span class="cov8" title="1">if base.Cmp(cmp) &lt; 0 </span><span class="cov8" title="1">{
+                return false, errors.New("storageSize smaller than request memory")
+        }</span>
+
+        <span class="cov8" title="1">return true, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">// +build !ignore_autogenerated
+
+/*
+
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+// Code generated by controller-gen. DO NOT EDIT.
+
+package v1
+
+import (
+        "k8s.io/apimachinery/pkg/runtime"
+)
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *AppOperator) DeepCopyInto(out *AppOperator) <span class="cov0" title="0">{
+        *out = *in
+        out.TypeMeta = in.TypeMeta
+        in.ObjectMeta.DeepCopyInto(&amp;out.ObjectMeta)
+        in.Spec.DeepCopyInto(&amp;out.Spec)
+        out.Status = in.Status
+}</span>
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new AppOperator.
+func (in *AppOperator) DeepCopy() *AppOperator <span class="cov0" title="0">{
+        if in == nil </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">out := new(AppOperator)
+        in.DeepCopyInto(out)
+        return out</span>
+}
+
+// DeepCopyObject is an autogenerated deepcopy function, copying the receiver, creating a new runtime.Object.
+func (in *AppOperator) DeepCopyObject() runtime.Object <span class="cov0" title="0">{
+        if c := in.DeepCopy(); c != nil </span><span class="cov0" title="0">{
+                return c
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *AppOperatorList) DeepCopyInto(out *AppOperatorList) <span class="cov0" title="0">{
+        *out = *in
+        out.TypeMeta = in.TypeMeta
+        in.ListMeta.DeepCopyInto(&amp;out.ListMeta)
+        if in.Items != nil </span><span class="cov0" title="0">{
+                in, out := &amp;in.Items, &amp;out.Items
+                *out = make([]AppOperator, len(*in))
+                for i := range *in </span><span class="cov0" title="0">{
+                        (*in)[i].DeepCopyInto(&amp;(*out)[i])
+                }</span>
+        }
+}
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new AppOperatorList.
+func (in *AppOperatorList) DeepCopy() *AppOperatorList <span class="cov0" title="0">{
+        if in == nil </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">out := new(AppOperatorList)
+        in.DeepCopyInto(out)
+        return out</span>
+}
+
+// DeepCopyObject is an autogenerated deepcopy function, copying the receiver, creating a new runtime.Object.
+func (in *AppOperatorList) DeepCopyObject() runtime.Object <span class="cov0" title="0">{
+        if c := in.DeepCopy(); c != nil </span><span class="cov0" title="0">{
+                return c
+        }</span>
+        <span class="cov0" title="0">return nil</span>
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *AppOperatorSpec) DeepCopyInto(out *AppOperatorSpec) <span class="cov0" title="0">{
+        *out = *in
+        in.ResourceRequirements.DeepCopyInto(&amp;out.ResourceRequirements)
+}</span>
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new AppOperatorSpec.
+func (in *AppOperatorSpec) DeepCopy() *AppOperatorSpec <span class="cov0" title="0">{
+        if in == nil </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">out := new(AppOperatorSpec)
+        in.DeepCopyInto(out)
+        return out</span>
+}
+
+// DeepCopyInto is an autogenerated deepcopy function, copying the receiver, writing into out. in must be non-nil.
+func (in *AppOperatorStatus) DeepCopyInto(out *AppOperatorStatus) <span class="cov0" title="0">{
+        *out = *in
+}</span>
+
+// DeepCopy is an autogenerated deepcopy function, copying the receiver, creating a new AppOperatorStatus.
+func (in *AppOperatorStatus) DeepCopy() *AppOperatorStatus <span class="cov0" title="0">{
+        if in == nil </span><span class="cov0" title="0">{
+                return nil
+        }</span>
+        <span class="cov0" title="0">out := new(AppOperatorStatus)
+        in.DeepCopyInto(out)
+        return out</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

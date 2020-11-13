@@ -47,7 +47,7 @@ func (r *AppOperator) Default() {
 }
 
 // TODO(user): change verbs to "verbs=create;update;delete" if you want to enable deletion validation.
-// +kubebuilder:webhook:verbs=create;update,path=/validate-webapp-my-domain-v1-appoperator,mutating=false,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,versions=v1,name=vappoperator.kb.io
+// +kubebuilder:webhook:verbs=create;update,path=/validate-webapp-my-domain-v1-appoperator,mutating=false,failurePolicy=fail,groups=webapp.my.domain,resources=appoperators,versions=v1,name=webhook.pingcap.io
 
 var _ webhook.Validator = &AppOperator{}
 

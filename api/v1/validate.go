@@ -90,6 +90,11 @@ func checkStorageSize(size string, cmp resource.Quantity) (bool, error) {
 		return true, nil
 	}
 
+	match, _ := regexp.MatchString("^[1-9]+?$", size)
+	if match {
+		size = size + "m"
+	}
+
 	base, err := resource.ParseQuantity(size)
 	if err != nil {
 		return false, errors.New("misformatted storage")

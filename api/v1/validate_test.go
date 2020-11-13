@@ -139,6 +139,7 @@ var storageSizeTest = []struct{
 	{   give: "", 		 want: true},
 	{   give: "400M", 	 want: false},
 	{   give: "400A", 	 want: false},
+	{   give: "400", 	 want: false},
 }
 func TestStorageSize(t *testing.T){
 	for _, unit := range storageSizeTest {
