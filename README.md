@@ -11,7 +11,8 @@ kustomize: v3.8.6
 
 ```shell
 make install 
-make deploy IMG=lut777/pingcap-webhook-test
+make deploy IMG=lut777/pingcap-webhook-test:v0.0.1
 ```
+
 
 
